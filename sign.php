@@ -92,14 +92,14 @@
         }
         ?>
         <form action="conn.php" method="POST">
-            <input type="text" name="name" placeholder="Name" >
-            <span class="error" id="nameError"></span><br>
+            <input type="text" name="name" placeholder="Name"  minlength="2" >
+            <span class="error" id="nameError"><?php if(!empty($name_error)){echo $name_error;}?></span><br>
 
             <input type="email" name="email" placeholder="Email address" >
-            <span class="error" id="emailError"></span><br>
+            <span class="error" id="emailError"><?php if(!empty($email_error)){echo $email_error;}?></span><br>
 
-            <input type="tel" name="phone" placeholder="Phone" >
-            <span class="error" id="phoneError"></span><br>
+            <input type="tel" name="phone" placeholder="Phone" minlength="10" maxlength="10" >
+            <span class="error" id="phoneError"><?php if(!empty($phone_error)){echo $phone_error;}?></span><br>
 
             <!-- <input type="date" name="dob" placeholder="Date of Birth" >
             <span class="error" id="dobError"></span><br> -->
@@ -113,10 +113,10 @@
             <span class="error" id="genderError"></span><br>
 
             <input type="text" name="username" placeholder="Username" >
-            <span class="error" id="usernameError"></span><br>
+            <span class="error" id="usernameError"><?php if(!empty($username_error)){echo $username_error;}?></span><br>
 
-            <input type="password" name="password" placeholder="Password" >
-            <span class="error" id="passwordError"></span><br>
+            <input type="password" name="password" placeholder="Password"  minlength="6">
+            <span class="error" id="passwordError"><?php if(!empty($password_error)){echo $password_error;}?></span><br>
 
             <input type="text" name="address" placeholder="Address" >
             <span class="error" id="addressError"></span><br>
@@ -148,15 +148,18 @@
             if (!emailPattern.test(email)) {
                 errors['email'] = "Email is not valid";
                 isValid = false;
+                exit;
             }
 
             // Validate phone
-            const phone = form["phone"].value;
-            if (!phone.match(/^[6-9][0-9]{9}$/)) {
-                errors['phone'] = "Phone number must be 10 digits long and start with 6, 7, 8, or 9";
-                isValid = false;
+            const phone = document.getElementById('phone').value;
+			var phoneError = document.getElementById('phoneError');
+            if (preg_match(!/^[6-9][0-9]{9}$/.test(phone))) {
+                phoneError.textContent = "Mobile number must start with 6, 7, 8, or 9 and be 10 digits long.";
+                valid = false;
+            } else {
+                phoneError.textContent = "";
             }
-
             // Validate date of birth
             // const dob = new Date(form["dob"].value);
             // const now = new Date();
